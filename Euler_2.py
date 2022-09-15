@@ -1,3 +1,6 @@
+from concurrent.futures import process
+from turtle import back, pos
+from typing import Optional
 from Euler_1 import fibonacci_sequence, is_prime
 
 
@@ -21,10 +24,11 @@ def permutation_ordered(current: list):
         current = current[:curr_k+1] + current[curr_k+1:][::-1]
         perms.append("".join(current))
 
-    return perms[999999]
+    return perms
 
 
-# print(permutation_ordered([1, 2, 3]))
+# print(permutation_ordered(["a", "b", "c"]))
+
 
 def fibonacci_blob(lenght):
     fibs = [1, 1]
@@ -122,4 +126,50 @@ def spiral_grid():
     return result
 
 
-print(spiral_grid())
+# print(spiral_grid())
+
+def distinct_powers():
+    powers = set([])
+
+    for a in range(2, 101):
+        for b in range(2, 101):
+            powers.add(a**b)
+
+    return len(powers)
+
+
+# print(distinct_powers())
+
+def digit_fifth_powers():
+    result = []
+
+    for i in range(2, 1000000000):
+        current = 0
+        for j in str(i):
+            current += int(j)**5
+        if current == i:
+            result.append(i)
+
+    return result
+
+
+def coin_sums():
+    coins = [1, 2, 5, 10, 20, 50, 100, 200]
+    count = 0
+    target = 200
+
+    for a in range(target, -1, -200):
+        for b in range(a, -1, -100):
+            for c in range(b, -1, -50):
+                for d in range(c, -1, -20):
+                    for e in range(d, -1, -10):
+                        for f in range(e, -1, -5):
+                            for g in range(f, -1, -2):
+                                for h in range(g, -1, -1):
+                                    if h == 0:
+                                        count += 1
+
+    return count
+
+
+# print(coin_sums())
