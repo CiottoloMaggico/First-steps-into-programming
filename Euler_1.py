@@ -1,6 +1,5 @@
 from itertools import count
 from math import factorial, sqrt
-import num2words
 
 triangle = [['75'],
             ['95', '64'],
@@ -68,7 +67,7 @@ def is_prime(n, type: bool):
     return factors
 
 
-# print(is_prime(0, True))
+# print(is_prime(123456789, False))
 
 
 def largest_prime_factors(n):
@@ -103,7 +102,8 @@ def mcd(a, b):
         return a
     return mcd(b, a % b)
 
-# print(mcd(29, 12))
+
+# print(mcd(387296, 1))
 
 
 def mcm(a, b):
@@ -174,7 +174,8 @@ def sieve_of_erastosthenes(limit):
         j += 1
     return arr
 
-# print(sieve_of_erastosthenes(50000))
+
+# print(sieve_of_erastosthenes(1000000))
 
 
 def sieve_of_erastosthenes_enchanted(limit):
@@ -197,7 +198,8 @@ def sieve_of_erastosthenes_enchanted(limit):
 
     return arr
 
-# print(sieve_of_erastosthenes_enchanted(200000))
+
+# print(sieve_of_erastosthenes_enchanted(100000))
 
 
 def largest_product_series(series, delta):
@@ -400,7 +402,7 @@ def number_letter_counts(limit):
     res = 0
     current = ""
     for i in range(1, limit+1):
-        current = num2words.num2words(i)
+        # current = num2words.num2words(i)
         res += len(current) - current.count("-") - current.count(" ")
     return res
 
@@ -502,11 +504,11 @@ def d(n):
     for i in range(len(divisors)):
         if (int(n/divisors[i]) not in divisors) and divisors[i] != 1:
             divisors.append(int(n/divisors[i]))
-
+    divisors.pop(0)
     return sorted(divisors)
 
 
-# print(d(220))
+# print(d(123456789))
 
 
 def amicable_numbers():

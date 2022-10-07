@@ -1,4 +1,9 @@
+from distutils.command.build import build
+from itertools import combinations
+from multiprocessing import current_process
+from operator import sub
 from os import remove
+import this
 from typing import final
 
 
@@ -95,3 +100,105 @@ def reverse_string(stringa, first_half="", second_half="", i=0):
 
 
 # print(reverse_string("Techie Delight"))
+
+def strstr(x, y, pivot=0, k=0):
+    # Sample x "Techie Delight"
+    # Sample y "light"
+    if len(y) == 0:
+        return x
+
+    if len(y) == k:
+        return pivot-k
+
+    if x[pivot] != y[k]:
+        final = strstr(x, y, pivot+1, 0)
+    if x[pivot] == y[k]:
+        final = strstr(x, y, pivot+1, k+1)
+
+    return final
+
+
+# print(strstr("Delight", ""))
+
+def rotated_palidrome(to_analyze, i=0):
+    # ABCDCBA
+    # CBAABCD
+    if not len(to_analyze):
+        return False
+
+    if i > len(to_analyze):
+        return f"False, is not a rotation of any palindrome"
+
+    if recursive_palindrome(len(to_analyze)-1, to_analyze):
+        return f"True, is a rotation of {to_analyze}"
+
+    to_analyze = to_analyze[1:] + to_analyze[:1]
+    result = rotated_palidrome(to_analyze, i+1)
+
+    return result
+
+
+# print(rotated_palidrome(""))
+
+def recursion_parentesis(n, result=set(), open_b=0, current=""):
+    if n & 1 and not open_b:
+        return result
+
+    if n == 0:
+        if not open_b:
+            result.add(current)
+        return result
+
+    if open_b > n:
+        return result
+
+    result = recursion_parentesis(n-1, result, open_b+1, current + "(")
+
+    if open_b > 0:
+        result = recursion_parentesis(n-1, result, open_b-1, current + ")")
+
+    return result
+
+
+# print(recursion_parentesis(6))
+
+def all_combination(a, b, c, i=0, j=0, k=0, result=[], current=""):
+    # list 1 —> [John, Emma]
+    # list 2 —> [Plays, Hates, Watches]
+    # list 3 —> [Cricket, Soccer, Chess]
+    if len(a) == i:
+        return result
+
+    if j == len(b)-1 and k == len(c):
+        return all_combination(a, b, c, i+1, 0, 0, result, current)
+
+    if k == len(c):
+        return all_combination(a, b, c, i, j+1, 0, result, current)
+
+    current = f"{a[i]} {b[j]} {c[k]}"
+    result = all_combination(a, b, c, i, j, k+1, result, current)
+    result.append(current)
+
+    return result
+
+
+a = ["John", "Emma"]
+b = ["Plays", "Hates", "Watches"]
+c = ["Cricket", "Soccer", "Chess"]
+
+
+# print(all_combination(a, b, c))
+
+def substring_gen(string, result=[]):
+    if not string:
+        print(result)
+        return result
+
+    for i in range(len(string)):
+        result.append(string[:i+1])
+        substring_gen(string[i+1:], result)
+        result.pop()
+
+    return result
+
+# print(substring_gen("string"))

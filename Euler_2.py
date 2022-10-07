@@ -1,7 +1,9 @@
 from concurrent.futures import process
 from turtle import back, pos
 from typing import Optional
-from Euler_1 import fibonacci_sequence, is_prime
+from unittest import result
+from Euler_1 import fibonacci_sequence, is_prime, mcd, sieve_of_erastosthenes_enchanted
+from math import sqrt
 
 
 def permutation_ordered(current: list):
@@ -173,3 +175,122 @@ def coin_sums():
 
 
 # print(coin_sums())
+
+def possible_divisors(n, divs):
+    result = []
+
+    for i in divs:
+        if sorted(f"{(int(n)//int(int(i)))}{n}{int(i)}") == list("123456789"):
+            result.append(int(i))
+
+    return result
+
+
+# print(possible_divisors("7254", is_prime(7254, False)))
+
+
+def pandigital_number():
+    results = []
+
+    for i in range(0, 10000):
+        divisors = possible_divisors(str(i), is_prime(i, False))
+        if len(divisors):
+            results.append(i)
+
+    return sum(results)
+
+
+# print(pandigital_number())
+
+def digit_cancelling_fractions():
+    fractions = []
+    numerator = 1
+    denominator = 1
+
+    for b in range(1, 10):
+        for a in range(1, 10):
+            for c in range(1, 10):
+                base = a/c
+                completed = int(f"{a}{b}")/int(f"{c}{b}")
+                completed_one = int(f"{a}{b}")/int(f"{b}{c}")
+                completed_two = int(f"{b}{a}")/int(f"{c}{b}")
+                completed_three = int(f"{b}{a}")/int(f"{b}{c}")
+                if base == completed and base < 1:
+                    numerator *= int(f"{a}{b}")
+                    denominator *= int(f"{c}{b}")
+                elif base == completed_one and base < 1:
+                    numerator *= int(f"{a}{b}")
+                    denominator *= int(f"{b}{c}")
+                elif base == completed_two and base < 1:
+                    numerator *= int(f"{b}{a}")
+                    denominator *= int(f"{c}{b}")
+                elif base == completed_three and base < 1:
+                    numerator *= int(f"{b}{a}")
+                    denominator *= int(f"{b}{c}")
+
+    result = mcd(numerator, denominator)
+    result = denominator // result
+
+    return result
+
+
+# print(digit_cancelling_fractions())
+
+def digit_factorial():
+    factorials = {"0": 1, "1": 1, "2": 2, "3": 6, "4": 24,
+                  "5": 120, "6": 720, "7": 5040, "8": 40320, "9": 362880}
+    results = []
+    value = 0
+
+    for i in range(3, 10000000):
+        current = str(i)
+        for j in current:
+            value += factorials[j]
+            if value > i:
+                break
+            if value == i:
+                results.append(i)
+        value = 0
+
+    return results
+
+
+# print(digit_factorial())
+
+def rotatate_generator(n, i=0, res=0):
+    if not len(n):
+        return None
+    if i > len(n):
+        if i == res:
+            return True
+        return False
+    if is_prime(int(n), True):
+        res += 1
+
+    new_n = n[1:] + n[:1]
+    res = rotatate_generator(new_n, i+1, res)
+
+    return res
+
+
+# print(rotatate_generator("19937"))
+
+
+def circular_primes(limit):
+    to_analyze = dict(zip([str(i) for i in range(0, limit)],
+                          sieve_of_erastosthenes_enchanted(limit)))
+    count = 0
+    i = 2
+    j = 1
+
+    while i < limit:
+        if to_analyze[str(i)]:
+            if rotatate_generator(str(i)):
+                count += 1
+        i = 2*j+1
+        j += 1
+
+    return count
+
+
+print(circular_primes(1000000))
